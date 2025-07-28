@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free hentai</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+        }
+        
+        .image-container {
+            position: relative;
+            width: 80vw;
+            max-width: 800px;
+            height: auto;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            display: block;
+        }
+        
+        .explosion {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 
+                    0 0 10px 5px rgba(255, 100, 100, 0),
+                    0 0 20px 10px rgba(255, 50, 50, 0),
+                    0 0 30px 15px rgba(255, 0, 0, 0);
+            }
+            50% {
+                box-shadow: 
+                    0 0 10px 5px rgba(255, 100, 100, 0.7),
+                    0 0 20px 10px rgba(255, 50, 50, 0.5),
+                    0 0 30px 15px rgba(255, 0, 0, 0.3);
+            }
+            100% {
+                box-shadow: 
+                    0 0 10px 5px rgba(255, 100, 100, 0),
+                    0 0 20px 10px rgba(255, 50, 50, 0),
+                    0 0 30px 15px rgba(255, 0, 0, 0);
+            }
+        }
+        
+        .explosion.active {
+            animation: pulse 3s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img src="https://masterpiecer-images.s3.yandex.net/123caf43321911ee90ad82f3eb491ca0:upscaled" alt="Abstract cosmic explosion with vibrant colors" class="main-image">
+        <div class="explosion" id="explosion"></div>
+    </div>
+
+    <audio id="explosionSound">
+        <source src="explosion.mp3" type="audio/mpeg">
+        
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const explosionElement = document.getElementById('explosion');
+        const audioElement = document.getElementById('explosionSound');
+        
+        // Function to trigger explosion effect
+        function triggerExplosion() {
+            // Reset animation
+            explosionElement.classList.remove('active');
+            void explosionElement.offsetWidth; // Trigger reflow
+            
+            // Apply animation
+            explosionElement.classList.add('active');
+            
+            // Play sound
+            audioElement.currentTime = 0;
+            audioElement.play();
+            
+            // Schedule next explosion
+            setTimeout(triggerExplosion, 8000);
+        }
+        
+        // Start the sequence
+        triggerExplosion();
+        
+        // Handle audio autoplay restrictions
+        document.addEventListener('click', function() {
+            if (audioElement.paused) {
+                // Load audio first to ensure local files play
+                audioElement.load();
+                audioElement.play().catch(e => console.log(e));
+            }
+        });
+        // Preload the audio file
+        audioElement.load();
+    </script>
+</body>
+</html>
