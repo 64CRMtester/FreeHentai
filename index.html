@@ -38,7 +38,7 @@
             top: 0;
             left: 0;
             pointer-events: none;
-            opacity: 0;
+            opacity: 1; /* Set initial opacity to 1 */
         }
         
         @keyframes pulse {
@@ -65,9 +65,43 @@
         .explosion.active {
             animation: pulse 3s ease-out forwards;
         }
+        
+        .glitter-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-weight: bold;
+            color: #ff00ff;
+            text-shadow: 
+                0 0 5px #ff00ff,
+                0 0 10px #ffff00,
+                3px 3px 0 rgba(0,0,0,0.2);
+            background-image: 
+                radial-gradient(circle, #ff00ff 10%, transparent 20%),
+                radial-gradient(circle, #ffff00 10%, transparent 20%),
+                radial-gradient(circle, #00ffff 10%, transparent 20%);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px, 50px 50px;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: glitter 1s linear infinite;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+        
+        @keyframes glitter {
+            0% { background-position: 0 0, 25px 25px, 50px 50px; }
+            100% { background-position: 50px 50px, 75px 75px, 100px 100px; }
+        }
     </style>
 </head>
 <body>
+    <div class="glitter-text">Чурка, го в доту </span>!!!</div>
     <div class="image-container">
         <img src="https://masterpiecer-images.s3.yandex.net/123caf43321911ee90ad82f3eb491ca0:upscaled" alt="Abstract cosmic explosion with vibrant colors" class="main-image">
         <div class="explosion" id="explosion"></div>
@@ -75,7 +109,7 @@
 
     <audio id="explosionSound">
         <source src="explosion.mp3" type="audio/mpeg">
-        
+        <source src="explosion.ogg" type="audio/ogg">
         Your browser does not support the audio element.
     </audio>
 
@@ -87,21 +121,20 @@
         function triggerExplosion() {
             // Reset animation
             explosionElement.classList.remove('active');
+            explosionElement.style.opacity = '1'; // Ensure opacity is set to 1
             void explosionElement.offsetWidth; // Trigger reflow
             
             // Apply animation
             explosionElement.classList.add('active');
+            explosionElement.style.opacity = '0'; // Set opacity to 0 after animation
             
             // Play sound
             audioElement.currentTime = 0;
             audioElement.play();
-            
-            // Schedule next explosion
-            setTimeout(triggerExplosion, 8000);
         }
         
         // Start the sequence
-        triggerExplosion();
+        setTimeout(triggerExplosion, 4000);  // Start after initial 4s delay
         
         // Handle audio autoplay restrictions
         document.addEventListener('click', function() {
